@@ -4,14 +4,13 @@ ENV KEYBOX_VERSION=2.90.01 \
     KEYBOX_FILENAME=2.90_01 \
     DOCKERIZE_VERSION=0.5.0
 
-RUN apt-get update && apt-get -y install wget && \
+RUN yum update -y && yum -y install wget && \
     wget --quiet https://github.com/skavanagh/KeyBox/releases/download/v${KEYBOX_VERSION}/keybox-jetty-v${KEYBOX_FILENAME}.tar.gz && \
     wget --quiet https://github.com/jwilder/dockerize/releases/download/v${DOCKERIZE_VERSION}/dockerize-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz && \
     tar xzf keybox-jetty-v${KEYBOX_FILENAME}.tar.gz -C /opt && \
     tar xzf dockerize-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz -C /usr/local/bin && \
     mv /opt/KeyBox-jetty /opt/keybox && \
     rm keybox-jetty-v${KEYBOX_FILENAME}.tar.gz dockerize-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz && \
-    apt-get remove --purge -y wget && apt-get -y autoremove && rm -rf /var/lib/apt/lists/* && \
     # create db directory for later permission update
     mkdir /opt/keybox/jetty/keybox/WEB-INF/classes/keydb && \
     # remove default config - will be written by dockerize on startup
